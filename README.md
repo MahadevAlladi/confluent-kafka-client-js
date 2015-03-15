@@ -1,0 +1,1 @@
+A Javascript wrapper for the [Confluent Kafka REST API](confluent.io/docs/current/kafka-rest/docs/intro.html).

@@ -3,12 +3,9 @@ machine:
     - docker
   environment:
     CONFLUENT_TEST_URI: http://localhost:8082
-    DOCKER_EMAIL: deploy@blikk.co
-    DOCKER_USER: blikkdeploy
 
 dependencies:
   pre:
-    - docker login -e $DOCKER_EMAIL  -u $DOCKER_USER -p $DOCKER_PASSWORD
     - docker run -d -p 8082:8082 blikk/confluent
 
 test:

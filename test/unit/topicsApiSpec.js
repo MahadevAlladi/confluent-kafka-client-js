@@ -12,20 +12,22 @@ var responsesDir = path.join(path.dirname(__filename), '/responses');
 client.setHost('http://test.confluent-rest-js.io');
 Promise.promisifyAll(topicsApi);
 
-var nockScope = nock('http://test.confluent-rest-js.io')
-  .defaultReplyHeaders({
-    'Content-Type': 'application/vnd.kafka.v1+json'
-  });
-
 describe('Topics Api', function(){
+
+  beforeEach(function(){
+    nock.cleanAll();
+  })
 
   describe('GET /topics (Listing topics)', function(){
 
     it('should work', function(){
       
-      nockScope.get('/topics')
+      nock('http://test.confluent-rest-js.io')
+        .get('/topics')
         .matchHeader('Accept', 'application/vnd.kafka.v1+json')
-        .reply(200, ['topic1', 'topic2'])
+        .reply(200, ['topic1', 'topic2'], {
+          'Content-Type': 'application/vnd.kafka.v1+json'
+        });
 
       return topicsApi.listAsync().then(function(result){
         expect(result).to.eql(['topic1', 'topic2']);
@@ -39,9 +41,12 @@ describe('Topics Api', function(){
     it('should work', function(){
       var topicId = 'test';
       
-      nockScope.get('/topics/' + topicId)
+      nock('http://test.confluent-rest-js.io')
+        .get('/topics/' + topicId)
         .matchHeader('Accept', 'application/vnd.kafka.v1+json')
-        .replyWithFile(200, responsesDir + '/topics/show.json');
+        .replyWithFile(200, responsesDir + '/topics/show.json', {
+          'Content-Type': 'application/vnd.kafka.v1+json'
+        });
 
       return topicsApi.getAsync(topicId).then(function(result){
         expect(result.name).to.eql('test');
@@ -65,10 +70,13 @@ describe('Topics Api', function(){
         }]
       };
       
-      nockScope.post('/topics/' + topicId)
+      nock('http://test.confluent-rest-js.io')
+        .post('/topics/' + topicId)
         .matchHeader('Content-Type', 'application/vnd.kafka.avro.v1+json')
         .matchHeader('Accept', 'application/vnd.kafka.v1+json')
-        .replyWithFile(200, responsesDir + '/topics/produceMessage.json');
+        .replyWithFile(200, responsesDir + '/topics/produceMessage.json', {
+          'Content-Type': 'application/vnd.kafka.v1+json'
+        });
 
       return topicsApi.produceMessageAsync(topicId, testMessage).then(function(result){
         expect(result.value_schema_id).to.not.be.empty;

@@ -12,25 +12,45 @@ client.setHost('http://test.confluent-rest-js.io');
 var consumerInstanceApi = client.consumer(GROUP_NAME, CONSUMER_ID);
 Promise.promisifyAll(consumerInstanceApi);
 
-var nockScope = nock('http://test.confluent-rest-js.io').defaultReplyHeaders({
-  'Content-Type': 'application/vnd.kafka.v1+json'
-});
-
-
 describe('Consumer Instance Api', function(){
+
+  beforeEach(function(){
+    nock.cleanAll();
+  });
 
   describe('POST /consumers/:groupName/instances/:instanceId/offsets (Committing offsets)', function(){
 
     it('should work', function(){
-      nockScope
+      nock('http://test.confluent-rest-js.io')
         .matchHeader('Accept', 'application/vnd.kafka.v1+json')
         .post('/consumers/testGroup/instances/testConsumer/offsets')
-        .replyWithFile(200, 'test/unit/responses/consumerInstance/offsets.json');
+        .replyWithFile(200, 'test/unit/responses/consumerInstance/offsets.json', {
+          'Content-Type': 'application/vnd.kafka.v1+json'
+        });
 
       return consumerInstanceApi.commitOffsetsAsync().then(function(result){
         expect(result.length).to.eql(3);
       });
 
+    });
+  });
+
+  describe('GET /consumers/:groupName/instances/:instanceId/topics/:topic (Consuming messages)', function(){
+
+    var topicName = 'testTopic';
+
+    it('should work', function(){
+      nock('http://test.confluent-rest-js.io')
+        .matchHeader('Accept', 'application/vnd.kafka.avro.v1+json')
+        .get('/consumers/testGroup/instances/testConsumer/topics/testTopic')
+        .replyWithFile(200, 'test/unit/responses/consumerInstance/consume.json', {
+         'Content-Type': 'application/vnd.kafka.avro.v1+json'
+        });
+
+      return consumerInstanceApi.consumeAsync(topicName, {}).then(function(result){
+        expect(result.length).to.eql(2);
+      });
+    
     });
 
   });
@@ -38,34 +58,16 @@ describe('Consumer Instance Api', function(){
   describe('DELETE /consumers/:groupName/instances/:instanceId (Deleting a consumer)', function(){
 
     it('should work', function(){
-      nockScope
+      nock('http://test.confluent-rest-js.io')
         .matchHeader('Accept', 'application/vnd.kafka.v1+json')
         .delete('/consumers/testGroup/instances/testConsumer')
-        .reply(204);
+        .reply(204, {}, {
+          'Content-Type': 'application/vnd.kafka.v1+json'
+        });
       return consumerInstanceApi.deleteAsync();
     });
 
   });
 
-
-  // describe('GET /consumers/:groupName/instances/:instanceId/topics/:topic (Consuming messages)', function(){
-
-  //   var topicName = 'testTopic';
-
-  //   it('should work', function(){
-  //     nockScope
-  //       .matchHeader('Accept', 'application/vnd.kafka.avro.v1+json')
-  //       .get('/consumers/testGroup/instances/testConsumer/topics/testTopic')
-  //       .replyWithFile(200, 'test/unit/responses/consumerInstance/consume.json', {
-  //        'Content-Type': 'application/vnd.kafka.avro.v1+json'
-  //       });
-
-  //     return consumerInstanceApi.consumeAsync(topicName, {}).then(function(result){
-  //       expect(result.length).to.eql(2);
-  //     });
-
-  //   });
-
-  // });
 
 });

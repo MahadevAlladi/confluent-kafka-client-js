@@ -1,5 +1,6 @@
-A Javascript wrapper for the [Confluent Kafka REST API](confluent.io/docs/current/kafka-rest/docs/intro.html).
+[![Circle CI](https://circleci.com/gh/blikkhq/confluent-rest-js.svg?style=svg)](https://circleci.com/gh/blikkhq/confluent-rest-js)
 
+A Javascript wrapper for the [Confluent Kafka REST API](confluent.io/docs/current/kafka-rest/docs/intro.html).
 
 ## TODO
 

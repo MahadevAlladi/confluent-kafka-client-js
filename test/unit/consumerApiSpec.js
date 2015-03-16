@@ -20,10 +20,12 @@ describe('Consumers Api', function(){
     var groupName = 'testGroup';
 
     it('should work', function(){
-      nockScope.post('/consumers/' + groupName).reply(200, {
-        instance_id: 'my_consumer',
-        base_uri: 'http://test.confluent-rest-js.io/consumers/testGroup/instances/my_consumer'
-      });
+      nockScope.post('/consumers/' + groupName)
+        .matchHeader('Content-Type', 'application/vnd.kafka.v1+json')
+        .reply(200, {
+          instance_id: 'my_consumer',
+          base_uri: 'http://test.confluent-rest-js.io/consumers/testGroup/instances/my_consumer'
+        });
       
       return consumersApi.createAsync(groupName, {
         id: 'my_consumer',

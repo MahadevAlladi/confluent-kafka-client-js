@@ -1,0 +1,15 @@
+machine:
+  services:
+    - docker
+  environment:
+    CONFLUENT_TEST_URI: http://localhost:8082
+
+dependencies:
+  pre:
+    - docker login -e $DOCKER_EMAIL  -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - docker run -p 8082:8082 blikk/confluent
+
+test:
+  override:
+    - npm test
+    - node test/e2e-test.js

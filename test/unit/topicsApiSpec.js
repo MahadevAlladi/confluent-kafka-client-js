@@ -22,7 +22,11 @@ describe('Topics Api', function(){
   describe('GET /topics (Listing topics)', function(){
 
     it('should work', function(){
-      nockScope.get('/topics').reply(200, ['topic1', 'topic2'])
+      
+      nockScope.get('/topics')
+        .matchHeader('Accept', 'application/vnd.kafka.v1+json')
+        .reply(200, ['topic1', 'topic2'])
+
       return topicsApi.listAsync().then(function(result){
         expect(result).to.eql(['topic1', 'topic2']);
       });
@@ -34,7 +38,11 @@ describe('Topics Api', function(){
 
     it('should work', function(){
       var topicId = 'test';
-      nockScope.get('/topics/' + topicId).replyWithFile(200, responsesDir + '/topics/show.json');
+      
+      nockScope.get('/topics/' + topicId)
+        .matchHeader('Accept', 'application/vnd.kafka.v1+json')
+        .replyWithFile(200, responsesDir + '/topics/show.json');
+
       return topicsApi.getAsync(topicId).then(function(result){
         expect(result.name).to.eql('test');
         expect(result.partitions.length).to.eql(2);
@@ -56,7 +64,12 @@ describe('Topics Api', function(){
           partition: 1
         }]
       };
-      nockScope.post('/topics/' + topicId).replyWithFile(200, responsesDir + '/topics/produceMessage.json');
+      
+      nockScope.post('/topics/' + topicId)
+        .matchHeader('Content-Type', 'application/vnd.kafka.avro.v1+json')
+        .matchHeader('Accept', 'application/vnd.kafka.v1+json')
+        .replyWithFile(200, responsesDir + '/topics/produceMessage.json');
+
       return topicsApi.produceMessageAsync(topicId, testMessage).then(function(result){
         expect(result.value_schema_id).to.not.be.empty;
       });

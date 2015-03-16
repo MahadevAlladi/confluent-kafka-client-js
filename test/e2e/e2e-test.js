@@ -37,6 +37,7 @@ var produceMessagesAsync = function(){
     ]
   }).then(function(result){
     expect(result.value_schema_id).to.exist;
+    console.log('Created a schema with ID %s', result.value_schema_id);
     return client.topics.listAsync();
   }).then(function(topics){
     expect(topics).to.include(TEST_TOPIC);

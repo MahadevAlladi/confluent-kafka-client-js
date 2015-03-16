@@ -9,7 +9,7 @@ A lightweight Javascript wrapper for the [Confluent Kafka REST API](http://confl
 The example below show standard node.js callback-based methods. The library can also be promisified with [Bluebird](https://github.com/petkaantonov/bluebird). Take a look at the tests to see what thay may look like.
 
 ```javascript
-var client = require('confluent-rest-js');
+var client = require('confluent-kafka-client');
 client.setHost('http://your-kafka-rest-api.io:8082');
 
 var valueSchema = {
@@ -40,7 +40,7 @@ client.consumers.create('YOUR_CONSUMER_GROUP',
 A wrapper around the consumer that periodically polls for new records.
 
 ```javascript
-var client = require('confluent-rest-js');
+var client = require('confluent-kafka-client');
 client.setHost('http://your-kafka-rest-api.io:8082');
 
 // 500ms poll interval
@@ -55,7 +55,6 @@ client.consumers.createStreamingConsumerAsync(500, 'YOUR_TOPIC',
   });
 });
 ```
-
 
 
 ## TODO

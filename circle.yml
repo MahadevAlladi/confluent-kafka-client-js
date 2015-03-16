@@ -6,7 +6,7 @@ machine:
 
 dependencies:
   pre:
-    - docker run -d -p 8082:8082 blikk/confluent
+    - "docker run -d -p 8082:8082 blikk/confluent && sleep 10"
 
 test:
   override:

@@ -1,0 +1,14 @@
+{
+  "key_schema_id": null,
+  "value_schema_id": 32,
+  "offsets": [
+    {
+      "partition": 2,
+      "offset": 103
+    },
+    {
+      "partition": 1,
+      "offset": 104
+    }
+  ]
+}

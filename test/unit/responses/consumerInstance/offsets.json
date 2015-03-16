@@ -1,0 +1,20 @@
+[
+  {
+    "topic": "test",
+    "partition": 1,
+    "consumed": 100,
+    "committed": 100
+  },
+  {
+    "topic": "test",
+    "partition": 2,
+    "consumed": 200,
+    "committed": 200
+  },
+  {
+    "topic": "test2",
+    "partition": 1,
+    "consumed": 50,
+    "committed": 50
+  }
+]

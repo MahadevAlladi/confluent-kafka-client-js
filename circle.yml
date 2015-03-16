@@ -9,7 +9,7 @@ machine:
 dependencies:
   pre:
     - docker login -e $DOCKER_EMAIL  -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - docker run -p 8082:8082 blikk/confluent
+    - docker run -d -p 8082:8082 blikk/confluent
 
 test:
   override:

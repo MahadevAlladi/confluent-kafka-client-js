@@ -2,7 +2,7 @@
   "name": "confluent-rest-js",
   "version": "0.1.0",
   "description": "A Javascript wrapper for the Confluent Kafka REST API",
-  "main": "main.js",
+  "main": "lib/client.js",
   "scripts": {
     "test": "mocha",
     "test-e2e": "node test/e2e/e2e-test.js"

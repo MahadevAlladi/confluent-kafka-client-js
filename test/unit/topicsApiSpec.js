@@ -78,7 +78,7 @@ describe('Topics Api', function(){
           'Content-Type': 'application/vnd.kafka.v1+json'
         });
 
-      return topicsApi.produceMessageAsync(topicId, testMessage).then(function(result){
+      return topicsApi.produceMessagesAsync(topicId, testMessage).then(function(result){
         expect(result.value_schema_id).to.not.be.empty;
       });
     });

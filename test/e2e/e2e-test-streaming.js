@@ -38,7 +38,7 @@ client.consumers.createStreamingConsumerAsync(POLL_INTERVAL, TEST_TOPIC,
 
 // Produce message to the topic
 var produceMessagesAsync = function(messages){
-  return client.topics.produceMessageAsync(TEST_TOPIC, {
+  return client.topics.produceMessagesAsync(TEST_TOPIC, {
     value_schema: JSON.stringify({
       name: 'int',
       type: 'int', 

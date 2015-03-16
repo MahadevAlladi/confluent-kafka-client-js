@@ -10,7 +10,7 @@ The example below show standard node.js callback-based methods. The library can 
 
 ```javascript
 var client = require('confluent-rest-js');
-client.setHost(http://your-kafka-rest-api.io:8082);
+client.setHost('http://your-kafka-rest-api.io:8082');
 
 var valueSchema = {
   name: 'int',
@@ -18,15 +18,16 @@ var valueSchema = {
 };
 
 // Produce some messages
-client.topics.produceMessageAsync('YOUR_TOPIC', {
+client.topics.produceMessages('YOUR_TOPIC', {
   value_schema: JSON.stringify(valueSchema),
   records: [{value: 10}, {value: 100}]
 }, function(err, res){
-  // Your handler
+  // ...
 });
 
 // Create a consumer
-client.consumers.create('YOUR_CONSUMER_GROUP', {'auto.offset.reset': 'smallest'}, function(err, res){
+client.consumers.create('YOUR_CONSUMER_GROUP', 
+  {'auto.offset.reset': 'smallest'}, function(err, res){
   return client.consumer(res.instance_id).consume('YOUR_TOPIC', function(err, data){
     console.log(data);
   });
@@ -34,22 +35,24 @@ client.consumers.create('YOUR_CONSUMER_GROUP', {'auto.offset.reset': 'smallest'}
 
 ```
 
-## Polling/Streamng client
+## Polling/Streaming consumer
+
+A wrapper around the consumer that periodically polls for new records.
 
 ```javascript
 var client = require('confluent-rest-js');
-client.setHost(http://your-kafka-rest-api.io:8082);
+client.setHost('http://your-kafka-rest-api.io:8082');
 
 // 500ms poll interval
 client.consumers.createStreamingConsumerAsync(500, 'YOUR_TOPIC', 
   'YOUR_CONSUMER_GROUP', {'auto.offset.reset': 'smallest'}, function(err, streamingConsumer){
-   streamingConsumer.start();
-   streamingConsumer.on('data', function(data){
+  streamingConsumer.start();
+  streamingConsumer.on('data', function(data){
     console.log(data);
-   });
+  });
   streamingConsumer.on('error', function(error){
     console.log(error);
-   });
+  });
 });
 ```
 

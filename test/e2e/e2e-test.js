@@ -21,7 +21,7 @@ console.log('Using topic %s for testing.', TEST_TOPIC);
 
 // Produce a message to a new topic
 var produceMessagesAsync = function(){
-  return client.topics.produceMessageAsync(TEST_TOPIC, {
+  return client.topics.produceMessagesAsync(TEST_TOPIC, {
     value_schema: JSON.stringify({
       type: 'record', 
       name: 'User',

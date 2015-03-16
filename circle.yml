@@ -14,4 +14,4 @@ dependencies:
 test:
   override:
     - npm test
-    - node test/e2e-test.js
+    - node test/e2e/e2e-test.js

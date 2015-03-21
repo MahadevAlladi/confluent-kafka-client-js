@@ -1,5 +1,5 @@
 {
-  "name": "confluent-kafka-client",
+  "name": "confluent-client",
   "version": "0.1.0",
   "description": "A Javascript wrapper for the Confluent Kafka REST API",
   "main": "lib/client.js",
